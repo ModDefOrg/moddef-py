@@ -1,0 +1,51 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    # Fork PRs don't run CI: PRs from outside the org must be pulled into a
+    # repo branch by a maintainer first (supply-chain guard).
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: moddef-py
+      # Conformance fixtures and the blessed device registry live in sibling repos.
+      - uses: actions/checkout@v4
+        with:
+          repository: ModDefOrg/moddef
+          path: moddef
+      - uses: actions/checkout@v4
+        with:
+          repository: ModDefOrg/devices
+          path: devices
+      - uses: bufbuild/buf-action@v1
+        with:
+          setup_only: true
+      - name: Generate the upstream Python schema (gen/ is not committed in moddef)
+        run: buf generate
+        working-directory: moddef
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: pip install -e . --group dev
+        working-directory: moddef-py
+      - name: Sync vendored schema and fail on drift
+        run: |
+          ./scripts/sync-schema.sh
+          git diff --exit-code -- src/moddef/v1
+        working-directory: moddef-py
+      - name: Test
+        run: python -m pytest -q
+        working-directory: moddef-py
