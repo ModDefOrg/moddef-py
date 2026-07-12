@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Transport abstraction (spec §32.3): async register-level access.
 
 `offset` is the zero-based data-model offset within the given address space

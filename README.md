@@ -51,3 +51,16 @@ Conformance tests need sibling checkouts of
 generated protobuf modules under `src/moddef/v1/` are vendored from
 `moddef/gen/python` (`scripts/sync-schema.sh`) and drift-checked in CI
 against the pinned buf plugins.
+
+## License of generated output
+
+Code generated from a ModDef document (for example by `moddef gen`) is not a
+derivative work of the ModDef tooling or runtime. You may license the generated
+output under any terms you choose. The runtime it imports (this package, `moddef`) is
+Apache-2.0 licensed; see the LICENSE file for its terms, which apply only to the
+runtime, not to your generated code.
+
+## License
+
+Apache-2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), and
+[CONTRIBUTING.md](CONTRIBUTING.md).

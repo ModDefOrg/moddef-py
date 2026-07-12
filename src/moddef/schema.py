@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Friendly re-exports of the vendored generated protobuf modules.
 
 The wire schema (spec §27) lives in moddef/proto; `moddef/v1/*_pb2.py` are

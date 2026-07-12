@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """In-memory transport for facade tests; reads beyond the configured size
 fail like a device answering a Modbus exception (used to skip discovery
 anchors)."""

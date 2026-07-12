@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Point decoder (spec §8–§15). Faithful port of go/codec/decode.go and
 moddef-ts decode.ts, including §10.5 selector_ref case application with
 fallback to the point's own transform."""

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Codec (spec §8–§15): pure functions over schema Points, kept in
 behavioral lockstep with go/codec, moddef-ts, and moddef-rs (shared vector
 suite in tests/test_codec.py)."""

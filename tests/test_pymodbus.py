@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Adapter integration test against an in-process pymodbus TCP server:
 chunked reads honoring max_read_words, write paths, exception mapping, and
 driving the Device facade end-to-end over real TCP."""

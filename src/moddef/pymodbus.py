@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """pymodbus adapter: implements the moddef [`Transport`] protocol over a
 pymodbus 3.x async client (spec §32.3). Install with `pip install
 moddef[pymodbus]`.

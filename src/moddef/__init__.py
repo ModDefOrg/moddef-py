@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """ModDef runtime for Python (spec v0.4): parse declarative Modbus device
 definitions, decode/encode points exactly, and drive devices asynchronously.
 

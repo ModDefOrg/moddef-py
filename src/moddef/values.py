@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Decoded value model (spec §8, §13).
 
 A decoded point value is one of: float (scaled DECIMAL/FLOAT), int (raw

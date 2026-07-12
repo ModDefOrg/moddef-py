@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Codec unit vectors mirroring go/codec tests, moddef-ts codec.test.ts and
 moddef-rs conformance/tests/codec.rs: integer widths, endianness, scaling,
 refs, strings, BCD, flags, fields, datetime, sentinels, composed values,

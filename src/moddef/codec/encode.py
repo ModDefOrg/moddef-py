@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Point encoder (spec §10 inverse, §11.5). Port of go/codec/encode.go and
 moddef-ts encode.ts: composed values, register-field structs, and
 selector_ref remain read-oriented and are not supported for encode."""

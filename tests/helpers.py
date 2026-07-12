@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
 """Shared test helpers: protojson-shaped Point construction (the same
 shapes as the TS test helpers) and fixture paths."""
 
