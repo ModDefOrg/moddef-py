@@ -17,6 +17,7 @@ from typing import Literal
 import yaml
 from google.protobuf import json_format
 
+from moddef.canonical import canonical_bytes
 from moddef.errors import ParseError
 from moddef.schema import ModDefDocument
 
@@ -86,11 +87,14 @@ def parse_document(data: bytes | str, format: DocumentFormat) -> ModDefDocument:
 def serialize_document(doc: ModDefDocument, format: DocumentFormat) -> bytes | str:
     """Serialize a document. yaml/json return str, binary returns bytes.
 
-    Binary serialization is deterministic (sorted map keys), matching the
-    Go-produced golden `.moddef` files byte for byte.
+    Binary serialization is deterministic (ascending map keys), matching the
+    Go-produced golden `.moddef` files byte for byte. It goes through
+    `canonical_bytes` rather than `SerializeToString(deterministic=True)`
+    because the protobuf C/upb backend orders map entries by descending key,
+    which would not match the canonical form.
     """
     if format == "binary":
-        return doc.SerializeToString(deterministic=True)
+        return canonical_bytes(doc)
     obj = json_format.MessageToDict(doc)
     if format == "json":
         return json.dumps(obj, indent=2) + "\n"
