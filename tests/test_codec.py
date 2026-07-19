@@ -222,6 +222,53 @@ def test_composed_mantissa_exponent():
     assert decode_point(p, [1500, 0xFFFF]) == pytest.approx(150.0)  # 1500 * 10^-1
 
 
+def _embedded_composed(mantissa_storage, words=2, mantissa_bits=24):
+    """§14.2 same-word mantissa/exponent point (embedded decade exponent)."""
+    sub = {
+        "offset": 0,
+        "lengthWords": words,
+        "byteOrder": "BIG_ENDIAN",
+        "wordOrder": "WORD_BIG_ENDIAN",
+    }
+    return point(
+        pointId="p",
+        storageType="COMPOSED",
+        valueType={"primitive": "DECIMAL"},
+        mapping={
+            "lengthWords": words,
+            "composed": {
+                "kind": "MANTISSA_EXPONENT",
+                "base": "10",
+                "mantissa": {**sub, "storageType": mantissa_storage,
+                             "bitOffset": 0, "bitLength": mantissa_bits},
+                "exponent": {**sub, "storageType": "S16",
+                             "bitOffset": mantissa_bits, "bitLength": 8},
+            },
+        },
+    )
+
+
+def test_composed_embedded_exponent_iskra_t6():
+    # FD 01 E2 40: exponent 0xFD = -3, mantissa 0x01E240 = 123456 -> 123.456.
+    p = _embedded_composed("S32")
+    assert decode_point(p, [0xFD01, 0xE240]) == pytest.approx(123.456)
+    # Negative mantissa: -123456 = 0xFE1DC0 in 24-bit two's complement.
+    assert decode_point(p, [0xFDFE, 0x1DC0]) == pytest.approx(-123.456)
+
+
+def test_composed_embedded_unsigned_mantissa_iskra_t5():
+    # Unsigned mantissa: a set bit 23 must not sign-extend.
+    p = _embedded_composed("U32")
+    assert decode_point(p, [0x0080, 0x0000]) == pytest.approx(8388608)
+
+
+def test_composed_embedded_56bit_mantissa_eaton_pxm():
+    # Eaton PXM GENERAL FORMAT: 8-bit exponent + 56-bit mantissa in 4 words.
+    p = _embedded_composed("U64", words=4, mantissa_bits=56)
+    # 123456789 * 10^-1 = 12345678.9
+    assert decode_point(p, [0xFF00, 0x0000, 0x075B, 0xCD15]) == pytest.approx(12345678.9)
+
+
 class TestEncodeRoundTrips:
     def test_scaled_u16(self):
         p = point(

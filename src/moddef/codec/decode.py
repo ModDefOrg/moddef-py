@@ -211,6 +211,14 @@ def _decode_composed(p: schema.Point, regs: Sequence[int]) -> float:
 
 
 def _decode_sub_int(m: schema.Mapping, regs: Sequence[int]) -> int:
+    """Integer from a sub-mapping (word offset relative to the window).
+
+    A bit window (bit_length > 0) selects [bit_offset, bit_offset+bit_length)
+    of the assembled window and sign-extends from bit_length — the §14.2
+    embedded decade exponent, where mantissa and exponent share a word (Iskra
+    T5/T6, Eaton PXM). Signedness comes from the sub-mapping's storage_type;
+    absent one, the value is signed (the pre-v0.5 behavior).
+    """
     idx = m.offset
     n = m.length_words or 1
     if idx + n > len(regs):
@@ -218,7 +226,15 @@ def _decode_sub_int(m: schema.Mapping, regs: Sequence[int]) -> int:
     byte_big = m.byte_order != schema.ByteOrder.LITTLE_ENDIAN
     word_big = m.word_order != schema.WordOrder.WORD_LITTLE_ENDIAN
     raw = decode_uint(assemble(regs[idx : idx + n], byte_big, word_big))
-    return sign_extend(raw & mask_for(n * 16), n * 16)
+
+    st = m.storage_type
+    bits = n * 16 if st == schema.StorageType.STORAGE_TYPE_UNSPECIFIED else storage_bits(st, n)
+    if m.bit_length > 0:
+        raw = (raw >> m.bit_offset) & mask_for(m.bit_length)
+        bits = m.bit_length
+    if st == schema.StorageType.STORAGE_TYPE_UNSPECIFIED or is_signed(st):
+        return sign_extend(raw & mask_for(bits), bits)
+    return raw & mask_for(bits)
 
 
 def _decode_flags(data: bytes, fl: schema.FlagSet) -> list[str]:

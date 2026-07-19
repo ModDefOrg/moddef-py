@@ -82,7 +82,7 @@ PACKED_BCD_DATETIME: DateTimeEncoding
 SPLIT_FIELDS: DateTimeEncoding
 
 class Mapping(_message.Message):
-    __slots__ = ("space", "offset", "length_words", "bit_index", "byte_order", "word_order", "sign_magnitude", "stride_words", "model_relative_offset", "composed", "allowed_function_codes", "string_encoding")
+    __slots__ = ("space", "offset", "length_words", "bit_index", "byte_order", "word_order", "sign_magnitude", "stride_words", "model_relative_offset", "composed", "allowed_function_codes", "string_encoding", "storage_type", "bit_offset", "bit_length")
     SPACE_FIELD_NUMBER: _ClassVar[int]
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     LENGTH_WORDS_FIELD_NUMBER: _ClassVar[int]
@@ -95,6 +95,9 @@ class Mapping(_message.Message):
     COMPOSED_FIELD_NUMBER: _ClassVar[int]
     ALLOWED_FUNCTION_CODES_FIELD_NUMBER: _ClassVar[int]
     STRING_ENCODING_FIELD_NUMBER: _ClassVar[int]
+    STORAGE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    BIT_OFFSET_FIELD_NUMBER: _ClassVar[int]
+    BIT_LENGTH_FIELD_NUMBER: _ClassVar[int]
     space: _types_pb2.AddressSpace
     offset: int
     length_words: int
@@ -107,7 +110,10 @@ class Mapping(_message.Message):
     composed: ComposedMapping
     allowed_function_codes: _containers.RepeatedScalarFieldContainer[int]
     string_encoding: StringEncoding
-    def __init__(self, space: _Optional[_Union[_types_pb2.AddressSpace, str]] = ..., offset: _Optional[int] = ..., length_words: _Optional[int] = ..., bit_index: _Optional[int] = ..., byte_order: _Optional[_Union[_types_pb2.ByteOrder, str]] = ..., word_order: _Optional[_Union[_types_pb2.WordOrder, str]] = ..., sign_magnitude: _Optional[bool] = ..., stride_words: _Optional[int] = ..., model_relative_offset: _Optional[int] = ..., composed: _Optional[_Union[ComposedMapping, _Mapping]] = ..., allowed_function_codes: _Optional[_Iterable[int]] = ..., string_encoding: _Optional[_Union[StringEncoding, _Mapping]] = ...) -> None: ...
+    storage_type: _types_pb2.StorageType
+    bit_offset: int
+    bit_length: int
+    def __init__(self, space: _Optional[_Union[_types_pb2.AddressSpace, str]] = ..., offset: _Optional[int] = ..., length_words: _Optional[int] = ..., bit_index: _Optional[int] = ..., byte_order: _Optional[_Union[_types_pb2.ByteOrder, str]] = ..., word_order: _Optional[_Union[_types_pb2.WordOrder, str]] = ..., sign_magnitude: _Optional[bool] = ..., stride_words: _Optional[int] = ..., model_relative_offset: _Optional[int] = ..., composed: _Optional[_Union[ComposedMapping, _Mapping]] = ..., allowed_function_codes: _Optional[_Iterable[int]] = ..., string_encoding: _Optional[_Union[StringEncoding, _Mapping]] = ..., storage_type: _Optional[_Union[_types_pb2.StorageType, str]] = ..., bit_offset: _Optional[int] = ..., bit_length: _Optional[int] = ...) -> None: ...
 
 class ComposedMapping(_message.Message):
     __slots__ = ("mantissa", "exponent", "base", "kind")
