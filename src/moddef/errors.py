@@ -72,3 +72,38 @@ class WriteConstraintError(ModDefError):
         self.point_id = point_id
         self.constraint = constraint
         self.value = value
+
+
+class CommandNotFoundError(ModDefError):
+    """A command id does not exist in the device profile (spec §11.7)."""
+
+    def __init__(self, command_id: str) -> None:
+        super().__init__(f"command not found: {command_id}")
+        self.command_id = command_id
+
+
+class RequiredParamMissingError(ModDefError):
+    """A required command param was not supplied to run_command (spec §11.7)."""
+
+    def __init__(self, command_id: str, field: str) -> None:
+        super().__init__(f"command {command_id}: required param missing: {field}")
+        self.command_id = command_id
+        self.field = field
+
+
+class PollTimeoutError(ModDefError):
+    """A poll step exceeded its timeout_ms (spec §11.7)."""
+
+    def __init__(self, point_id: str, timeout_ms: int) -> None:
+        super().__init__(f"poll step timed out on {point_id} after {timeout_ms}ms")
+        self.point_id = point_id
+        self.timeout_ms = timeout_ms
+
+
+class StepReferenceError(ModDefError):
+    """A command step/result reference does not resolve (spec §11.7)."""
+
+    def __init__(self, ref: str, kind: str) -> None:
+        super().__init__(f"command step reference not found: {kind} {ref}")
+        self.ref = ref
+        self.kind = kind

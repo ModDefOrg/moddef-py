@@ -10,7 +10,14 @@ _pb2 modules.
 
 from __future__ import annotations
 
-from moddef.v1 import device_pb2, document_pb2, mapping_pb2, measurand_pb2, types_pb2
+from moddef.v1 import (
+    command_pb2,
+    device_pb2,
+    document_pb2,
+    mapping_pb2,
+    measurand_pb2,
+    types_pb2,
+)
 
 # Document / device model
 ModDefDocument = document_pb2.ModDefDocument
@@ -57,6 +64,19 @@ DateTimeEncoding = mapping_pb2.DateTimeEncoding
 WriteSemantics = mapping_pb2.WriteSemantics
 WriteConstraints = mapping_pb2.WriteConstraints
 WriteBehavior = mapping_pb2.WriteBehavior
+
+# Commands (spec §11.7)
+Command = command_pb2.Command
+CommandParam = command_pb2.CommandParam
+CommandStep = command_pb2.CommandStep
+CommandResult = command_pb2.CommandResult
+WriteStep = command_pb2.WriteStep
+TriggerWrite = command_pb2.TriggerWrite
+PollStep = command_pb2.PollStep
+ReadStep = command_pb2.ReadStep
+Condition = command_pb2.Condition
+ConditionOp = command_pb2.ConditionOp
+PointRef = types_pb2.PointRef
 
 # Measurands
 MeasurandDefinition = measurand_pb2.MeasurandDefinition

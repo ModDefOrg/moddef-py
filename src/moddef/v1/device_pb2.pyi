@@ -1,3 +1,4 @@
+from moddef.v1 import command_pb2 as _command_pb2
 from moddef.v1 import mapping_pb2 as _mapping_pb2
 from moddef.v1 import measurand_pb2 as _measurand_pb2
 from moddef.v1 import types_pb2 as _types_pb2
@@ -36,7 +37,7 @@ class Availability(_message.Message):
     def __init__(self, point_id: _Optional[str] = ..., equals: _Optional[int] = ...) -> None: ...
 
 class DeviceProfile(_message.Message):
-    __slots__ = ("device_id", "vendor", "model", "family", "description", "supported_transports", "default_unit_id", "firmware_versions", "blocks", "variants")
+    __slots__ = ("device_id", "vendor", "model", "family", "description", "supported_transports", "default_unit_id", "firmware_versions", "blocks", "variants", "commands")
     DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
     VENDOR_FIELD_NUMBER: _ClassVar[int]
     MODEL_FIELD_NUMBER: _ClassVar[int]
@@ -47,6 +48,7 @@ class DeviceProfile(_message.Message):
     FIRMWARE_VERSIONS_FIELD_NUMBER: _ClassVar[int]
     BLOCKS_FIELD_NUMBER: _ClassVar[int]
     VARIANTS_FIELD_NUMBER: _ClassVar[int]
+    COMMANDS_FIELD_NUMBER: _ClassVar[int]
     device_id: str
     vendor: str
     model: str
@@ -57,7 +59,8 @@ class DeviceProfile(_message.Message):
     firmware_versions: _containers.RepeatedScalarFieldContainer[str]
     blocks: _containers.RepeatedCompositeFieldContainer[RegisterBlock]
     variants: _containers.RepeatedCompositeFieldContainer[DeviceVariant]
-    def __init__(self, device_id: _Optional[str] = ..., vendor: _Optional[str] = ..., model: _Optional[str] = ..., family: _Optional[str] = ..., description: _Optional[str] = ..., supported_transports: _Optional[_Iterable[_Union[_types_pb2.Transport, str]]] = ..., default_unit_id: _Optional[int] = ..., firmware_versions: _Optional[_Iterable[str]] = ..., blocks: _Optional[_Iterable[_Union[RegisterBlock, _Mapping]]] = ..., variants: _Optional[_Iterable[_Union[DeviceVariant, _Mapping]]] = ...) -> None: ...
+    commands: _containers.RepeatedCompositeFieldContainer[_command_pb2.Command]
+    def __init__(self, device_id: _Optional[str] = ..., vendor: _Optional[str] = ..., model: _Optional[str] = ..., family: _Optional[str] = ..., description: _Optional[str] = ..., supported_transports: _Optional[_Iterable[_Union[_types_pb2.Transport, str]]] = ..., default_unit_id: _Optional[int] = ..., firmware_versions: _Optional[_Iterable[str]] = ..., blocks: _Optional[_Iterable[_Union[RegisterBlock, _Mapping]]] = ..., variants: _Optional[_Iterable[_Union[DeviceVariant, _Mapping]]] = ..., commands: _Optional[_Iterable[_Union[_command_pb2.Command, _Mapping]]] = ...) -> None: ...
 
 class DeviceVariant(_message.Message):
     __slots__ = ("variant_id", "name", "base_device_id", "overrides", "additions", "removals")
